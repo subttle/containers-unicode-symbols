@@ -10,7 +10,7 @@ Maintainer : Roel van Dijk <vandijk.roel@gmail.com>
 module Data.Set.Unicode
     ( (∈), (∋), (∉), (∌)
     , (∅)
-    , (∪), (∖), (∆), (∩)
+    , (∪), (⊎), (×), (∖), (∆), (∩)
     , (⊆), (⊇), (⊈), (⊉)
     , (⊂), (⊃), (⊄), (⊅)
     ) where
@@ -24,6 +24,7 @@ module Data.Set.Unicode
 import Data.Bool     ( Bool, not )
 import Data.Function ( flip )
 import Data.Ord      ( Ord )
+import Data.Either   ( Either )
 
 -- from base-unicode-symbols:
 import Data.Eq.Unicode   ( (≢) )
@@ -33,7 +34,7 @@ import Data.Bool.Unicode ( (∧) )
 import Data.Set ( Set
                 , member, notMember
                 , empty
-                , union, difference, intersection
+                , union, disjointUnion, cartesianProduct, difference, intersection
                 , isSubsetOf, isProperSubsetOf
                 )
 
@@ -55,6 +56,8 @@ infix  4 ⊃
 infix  4 ⊄
 infix  4 ⊅
 infixl 6 ∪
+infixl 6 ⊎
+infixl 6 ×
 infixr 6 ∩
 infixl 9 ∖
 infixl 9 ∆
@@ -117,6 +120,24 @@ U+222A, UNION
 (∪) ∷ Ord α ⇒ Set α → Set α → Set α
 (∪) = union
 {-# INLINE (∪) #-}
+
+{-|
+(&#x228E;) = 'disjointUnion'
+
+U+228E, MULTISET UNION
+-}
+(⊎) ∷ Set α → Set β → Set (Either α β)
+(⊎) = disjointUnion
+{-# INLINE (⊎) #-}
+
+{-|
+(&#x00D7;) = 'cartesianProduct'
+
+U+00D7, MULTIPLICATION SIGN
+-}
+(×) ∷ (Ord α, Ord β) ⇒ Set α → Set β → Set (α, β)
+(×) = cartesianProduct
+{-# INLINE (×) #-}
 
 {-|
 (&#x2216;) = 'difference'
