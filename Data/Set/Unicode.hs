@@ -1,4 +1,4 @@
-{-# LANGUAGE NoImplicitPrelude, UnicodeSyntax #-}
+{-# LANGUAGE CPP, NoImplicitPrelude, UnicodeSyntax #-}
 
 {-|
 Module     : Data.Set.Unicode
@@ -7,6 +7,7 @@ License    : BSD3 (see the file LICENSE)
 Maintainer : Roel van Dijk <vandijk.roel@gmail.com>
 -}
 
+#if MIN_VERSION_containers(0,5,11)
 module Data.Set.Unicode
     ( (∈), (∋), (∉), (∌)
     , (∅)
@@ -14,7 +15,15 @@ module Data.Set.Unicode
     , (⊆), (⊇), (⊈), (⊉)
     , (⊂), (⊃), (⊄), (⊅)
     ) where
-
+#else
+module Data.Set.Unicode
+    ( (∈), (∋), (∉), (∌)
+    , (∅)
+    , (∪), (∖), (∆), (∩)
+    , (⊆), (⊇), (⊈), (⊉)
+    , (⊂), (⊃), (⊄), (⊅)
+    ) where
+#endif
 
 -------------------------------------------------------------------------------
 -- Imports
@@ -24,20 +33,30 @@ module Data.Set.Unicode
 import Data.Bool     ( Bool, not )
 import Data.Function ( flip )
 import Data.Ord      ( Ord )
+#if MIN_VERSION_containers(0,5,11)
 import Data.Either   ( Either )
+#endif
 
 -- from base-unicode-symbols:
 import Data.Eq.Unicode   ( (≢) )
 import Data.Bool.Unicode ( (∧) )
 
 -- from containers:
+#if MIN_VERSION_containers(0,5,11)
 import Data.Set ( Set
                 , member, notMember
                 , empty
                 , union, disjointUnion, cartesianProduct, difference, intersection
                 , isSubsetOf, isProperSubsetOf
                 )
-
+#else
+import Data.Set ( Set
+                , member, notMember
+                , empty
+                , union, difference, intersection
+                , isSubsetOf, isProperSubsetOf
+                )
+#endif
 
 -------------------------------------------------------------------------------
 -- Fixities
@@ -56,8 +75,10 @@ infix  4 ⊃
 infix  4 ⊄
 infix  4 ⊅
 infixl 6 ∪
+#if MIN_VERSION_containers(0,5,11)
 infixl 6 ⊎
 infixl 6 ×
+#endif
 infixr 6 ∩
 infixl 9 ∖
 infixl 9 ∆
@@ -121,6 +142,7 @@ U+222A, UNION
 (∪) = union
 {-# INLINE (∪) #-}
 
+#if MIN_VERSION_containers(0,5,11)
 {-|
 (&#x228E;) = 'disjointUnion'
 
@@ -138,6 +160,7 @@ U+00D7, MULTIPLICATION SIGN
 (×) ∷ (Ord α, Ord β) ⇒ Set α → Set β → Set (α, β)
 (×) = cartesianProduct
 {-# INLINE (×) #-}
+#endif
 
 {-|
 (&#x2216;) = 'difference'
